@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Pencil Toggle</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      width: 270px;
+      padding: 18px 16px 16px;
+      font-family: Georgia, serif;
+      background: #fafafa;
+      color: #1a1a1a;
+    }
+
+    h2 {
+      font-size: 15px;
+      font-weight: bold;
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* ── Mode picker ── */
+    .mode-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-bottom: 14px;
+    }
+
+    .mode-option {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      background: #fff;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      padding: 9px 12px;
+      cursor: pointer;
+      transition: border-color 0.15s;
+    }
+
+    .mode-option:has(input:checked) {
+      border-color: #121212;
+    }
+
+    .mode-option input[type="radio"] {
+      margin-top: 2px;
+      accent-color: #121212;
+      flex-shrink: 0;
+    }
+
+    .mode-label { font-size: 13px; font-weight: bold; }
+    .mode-desc  { font-size: 11px; color: #666; margin-top: 2px; }
+
+    /* ── Shortcut section (only visible in hotkey mode) ── */
+    #hotkey-section {
+      display: none;
+      margin-bottom: 12px;
+    }
+
+    .card {
+      background: #fff;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      padding: 11px 14px;
+      font-size: 13px;
+      color: #444;
+      line-height: 1.5;
+      margin-bottom: 8px;
+    }
+
+    .card strong { color: #111; }
+
+    #shortcut-keys {
+      display: inline-flex;
+      gap: 4px;
+      align-items: center;
+      flex-wrap: wrap;
+      margin-top: 4px;
+    }
+
+    kbd {
+      background: #eee;
+      border: 1px solid #bbb;
+      border-bottom-width: 2px;
+      border-radius: 4px;
+      padding: 2px 7px;
+      font-family: monospace;
+      font-size: 12px;
+      color: #222;
+    }
+
+    .sep { font-size: 11px; color: #999; }
+
+    #recording-area {
+      display: none;
+      background: #fff8e1;
+      border: 1px solid #f0c040;
+      border-radius: 8px;
+      padding: 11px 14px;
+      margin-bottom: 8px;
+      font-size: 13px;
+      text-align: center;
+      color: #7a5c00;
+    }
+
+    .btn {
+      display: block;
+      width: 100%;
+      padding: 9px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 13px;
+      font-family: Georgia, serif;
+      transition: background 0.15s;
+    }
+
+    #change-btn { background: #121212; color: #fff; }
+    #change-btn:hover { background: #333; }
+    #cancel-btn { background: #999; color: #fff; margin-top: 6px; display: none; }
+    #cancel-btn:hover { background: #777; }
+
+    .hint {
+      font-size: 11px;
+      color: #888;
+      margin-top: 10px;
+      line-height: 1.4;
+    }
+  </style>
+</head>
+<body>
+  <h2>✏️ NYT Pencil Toggle</h2>
+
+  <div class="mode-group">
+    <label class="mode-option">
+      <input type="radio" name="mode" value="shift" />
+      <div>
+        <div class="mode-label">Hold Shift</div>
+        <div class="mode-desc">Pencil is on while Shift is held, off when released</div>
+      </div>
+    </label>
+    <label class="mode-option">
+      <input type="radio" name="mode" value="hotkey" />
+      <div>
+        <div class="mode-label">Hotkey Toggle</div>
+        <div class="mode-desc">Press a key combo to toggle pencil on/off</div>
+      </div>
+    </label>
+  </div>
+
+  <div id="hotkey-section">
+    <div class="card">
+      <strong>Current shortcut</strong><br />
+      <span id="shortcut-keys"></span>
+    </div>
+    <div id="recording-area">Press a key combination…</div>
+    <button class="btn" id="change-btn">Change Shortcut</button>
+    <button class="btn" id="cancel-btn">Cancel</button>
+  </div>
+
+  <p class="hint">Works on nytimes.com/crosswords and the Mini crossword.</p>
+
+  <script src="popup.js"></script>
+</body>
+</html>
